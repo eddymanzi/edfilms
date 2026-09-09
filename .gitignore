@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# logs
+*.log
+server.log
+server-error.log
+vite.log
+npm-debug.log*
+
+# env files (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# build output
+dist/
+dist-ssr/
+
+# database files
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+# OS
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/
+backend/storage/movies/
+backend/storage/posters/

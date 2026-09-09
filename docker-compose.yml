@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-edfilms}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-edfilms}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-edfilms}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-edfilms}
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost}
+      SITE_URL: ${SITE_URL:-http://localhost}
+      STORAGE_DIR: /data/storage
+      # mock = works out of the box (no MTN credentials). Set PAYMENT_MODE=live
+      # in .env and fill the MOMO_* vars when you have real credentials.
+      PAYMENT_MODE: ${PAYMENT_MODE:-mock}
+      MOMO_API_BASE_URL: ${MOMO_API_BASE_URL:-}
+      MOMO_API_KEY: ${MOMO_API_KEY:-}
+      MOMO_API_SECRET: ${MOMO_API_SECRET:-}
+      MOMO_SUBSCRIPTION_KEY: ${MOMO_SUBSCRIPTION_KEY:-}
+      MOMO_TARGET_ENVIRONMENT: ${MOMO_TARGET_ENVIRONMENT:-sandbox}
+      MOMO_CALLBACK_URL: ${MOMO_CALLBACK_URL:-}
+    volumes:
+      - ./backend/storage:/data/storage
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL:-}
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
