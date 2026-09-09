@@ -48,10 +48,7 @@ services:
         sync: false
       - key: MOMO_CALLBACK_URL
         sync: false
-    disk:
-      name: storage
-      mountPath: /data/storage
-      sizeGB: 1
+    
 
   - type: web
     name: edfilms-frontend
