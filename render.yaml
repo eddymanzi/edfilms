@@ -1,4 +1,7 @@
 services:
+  # =========================
+  # BACKEND
+  # =========================
   - type: web
     name: edfilms-backend
     runtime: node
@@ -22,23 +25,15 @@ services:
       - key: JWT_SECRET
         generateValue: true
 
+      # Frontend URL
       - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: edfilms-frontend
-          property: url
+        value: https://edfilms-frontend.onrender.com
 
       - key: CORS_ORIGINS
-        fromService:
-          type: web
-          name: edfilms-frontend
-          property: url
+        value: https://edfilms-frontend.onrender.com
 
       - key: SITE_URL
-        fromService:
-          type: web
-          name: edfilms-frontend
-          property: url
+        value: https://edfilms-frontend.onrender.com
 
       - key: PAYMENT_MODE
         value: mock
@@ -62,6 +57,9 @@ services:
         sync: false
 
 
+  # =========================
+  # FRONTEND
+  # =========================
   - type: web
     name: edfilms-frontend
     runtime: static
@@ -72,12 +70,12 @@ services:
 
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: edfilms-backend
-          property: url
+        value: https://edfilms-backend.onrender.com
 
 
+# =========================
+# DATABASE
+# =========================
 databases:
   - name: edfilms-db
     plan: free
