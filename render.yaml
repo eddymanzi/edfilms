@@ -14,8 +14,11 @@ services:
       - key: NODE_ENV
         value: production
 
+      # TEMPORARY for Render Free Web Service: no persistent disk support.
+      # /tmp/storage is ephemeral — uploaded movie/poster files may disappear after restart/redeploy.
+      # Switch back to a persistent disk path if you upgrade from the Free plan.
       - key: STORAGE_DIR
-        value: /data/storage
+        value: /tmp/storage
 
       - key: DATABASE_URL
         fromDatabase:
