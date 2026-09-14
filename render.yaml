@@ -56,6 +56,9 @@ services:
       - key: MOMO_CALLBACK_URL
         sync: false
 
+      - key: MOMO_RECEIVING_MSISDN
+        sync: false
+
 
   # =========================
   # FRONTEND

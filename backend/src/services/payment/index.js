@@ -22,6 +22,7 @@ function createPaymentProvider(env = process.env) {
       apiSecret: env.MOMO_API_SECRET,
       subscriptionKey: env.MOMO_SUBSCRIPTION_KEY,
       targetEnvironment: env.MOMO_TARGET_ENVIRONMENT,
+      receivingMsisdn: env.MOMO_RECEIVING_MSISDN || '',
       currency: env.PAYMENT_CURRENCY || 'RWF'
     });
   }

@@ -35,6 +35,7 @@ services:
       MOMO_SUBSCRIPTION_KEY: ${MOMO_SUBSCRIPTION_KEY:-}
       MOMO_TARGET_ENVIRONMENT: ${MOMO_TARGET_ENVIRONMENT:-sandbox}
       MOMO_CALLBACK_URL: ${MOMO_CALLBACK_URL:-}
+      MOMO_RECEIVING_MSISDN: ${MOMO_RECEIVING_MSISDN:-250794143444}
     volumes:
       - ./backend/storage:/data/storage
     depends_on:

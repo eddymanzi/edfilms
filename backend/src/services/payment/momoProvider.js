@@ -10,6 +10,7 @@ class MomoProvider extends PaymentProvider {
     this.apiSecret = config.apiSecret || '';
     this.subscriptionKey = config.subscriptionKey || '';
     this.targetEnvironment = config.targetEnvironment || '';
+    this.receivingMsisdn = (config.receivingMsisdn || '').replace(/^0/, '250');
     this.currency = config.currency || 'RWF';
   }
 

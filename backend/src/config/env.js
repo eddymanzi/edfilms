@@ -29,6 +29,7 @@ function validateEnv() {
     requireEnv('MOMO_SUBSCRIPTION_KEY');
     requireEnv('MOMO_TARGET_ENVIRONMENT');
     requireEnv('MOMO_CALLBACK_URL');
+    requireEnv('MOMO_RECEIVING_MSISDN');
   }
 
   console.log('[env] Production environment validated OK');
