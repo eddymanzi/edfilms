@@ -28,6 +28,14 @@ services:
       - key: JWT_SECRET
         generateValue: true
 
+      # Admin account auto-created on first start (username is public info,
+      # password is set in the Render dashboard, not here).
+      - key: ADMIN_USERNAME
+        value: admin
+
+      - key: ADMIN_PASSWORD
+        sync: false
+
       # Frontend URL
       - key: FRONTEND_URL
         value: https://edfilms-frontend.onrender.com
@@ -72,6 +80,13 @@ services:
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
+
+    # SPA fallback: serve index.html for client-side routes (/admin, /admin/login,
+    # /movie/..., etc.) so they don't 404 on direct navigation or refresh.
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
 
     envVars:
       - key: VITE_API_URL

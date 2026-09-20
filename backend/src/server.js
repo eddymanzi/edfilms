@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const { validateEnv } = require('./config/env');
 const { initializeDatabase, getDb, DATABASE_URL } = require('./config/database');
 const { ensureStorageDirs } = require('./config/storage');
+const { bootstrapAdmin } = require('./utils/bootstrapAdmin');
 const { errorHandler } = require('./middleware/errorHandler');
 
 const adminRouter = require('./routes/admin');
@@ -37,6 +38,7 @@ function buildCorsOrigins() {
 async function startServer() {
   await initializeDatabase();
   ensureStorageDirs();
+  await bootstrapAdmin();
 
   const db = getDb();
   const allowedOrigins = new Set(buildCorsOrigins());
