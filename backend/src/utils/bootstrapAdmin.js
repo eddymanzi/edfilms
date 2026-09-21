@@ -10,18 +10,19 @@ async function bootstrapAdmin() {
     return null;
   }
 
-  const existing = await query('SELECT id, email FROM admins WHERE username = $1', [username]);
-  if (existing.rows.length > 0) {
-    if (email && !existing.rows[0].email) {
-      await AdminService.setAdminEmail(existing.rows[0].id, email);
-      console.log(`[bootstrap] Set email for admin "${username}"`);
-    }
-    return { username, alreadyExists: true };
+  const existing = await query('SELECT id FROM admins WHERE username = $1', [username]);
+
+  if (existing.rows.length === 0) {
+    const admin = await AdminService.createAdmin(username, password, email);
+    console.log(`[bootstrap] Created admin account: "${admin.username}"`);
+    return { username: admin.username, created: true };
   }
 
-  const admin = await AdminService.createAdmin(username, password, email);
-  console.log(`[bootstrap] Created admin account: "${admin.username}"`);
-  return { username: admin.username, created: true };
+  const adminId = existing.rows[0].id;
+  await AdminService.setAdminPassword(adminId, password);
+  await AdminService.setAdminEmail(adminId, email || null);
+  console.log(`[bootstrap] Synced credentials for admin: "${username}"`);
+  return { username, synced: true };
 }
 
 module.exports = { bootstrapAdmin };
