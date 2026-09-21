@@ -5,8 +5,11 @@ const { query } = require('../config/database');
 const JWT_SECRET = process.env.JWT_SECRET || 'edfilms_fallback_secret';
 
 class AdminService {
-  static async login(username, password) {
-    const result = await query('SELECT * FROM admins WHERE username = $1', [username]);
+  static async login(usernameOrEmail, password) {
+    const result = await query(
+      'SELECT * FROM admins WHERE username = $1 OR LOWER(email) = $1',
+      [String(usernameOrEmail || '').trim().toLowerCase()]
+    );
     const admin = result.rows[0];
 
     if (!admin) {
