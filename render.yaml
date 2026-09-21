@@ -38,13 +38,13 @@ services:
 
       # Frontend URL
       - key: FRONTEND_URL
-        value: https://edfilms-frontend.onrender.com
+        value: https://edfilms7.com
 
       - key: CORS_ORIGINS
-        value: https://edfilms-frontend.onrender.com
+        value: https://edfilms7.com,https://www.edfilms7.com,https://edfilms-frontend.onrender.com
 
       - key: SITE_URL
-        value: https://edfilms-frontend.onrender.com
+        value: https://edfilms7.com
 
       - key: PAYMENT_MODE
         value: mock
