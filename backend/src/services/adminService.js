@@ -28,11 +28,16 @@ class AdminService {
   }
 
   static async getAdmin(id) {
-    const result = await query('SELECT id, username, "createdAt" FROM admins WHERE id = $1', [id]);
+    const result = await query('SELECT id, username, email, "createdAt" FROM admins WHERE id = $1', [id]);
     return result.rows[0] || null;
   }
 
-  static async createAdmin(username, password) {
+  static async getAdminByEmail(email) {
+    const result = await query('SELECT * FROM admins WHERE LOWER(email) = $1', [String(email || '').trim().toLowerCase()]);
+    return result.rows[0] || null;
+  }
+
+  static async createAdmin(username, password, email) {
     const existing = await query('SELECT id FROM admins WHERE username = $1', [username]);
 
     if (existing.rows.length > 0) {
@@ -40,9 +45,21 @@ class AdminService {
     }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const result = await query('INSERT INTO admins (username, password) VALUES ($1, $2) RETURNING id', [username, hashedPassword]);
+    const result = await query(
+      'INSERT INTO admins (username, password, email) VALUES ($1, $2, $3) RETURNING id',
+      [username, hashedPassword, email || null]
+    );
 
     return { id: result.rows[0].id, username };
+  }
+
+  static async setAdminEmail(adminId, email) {
+    await query('UPDATE admins SET email = $1 WHERE id = $2', [email, adminId]);
+  }
+
+  static async setAdminPassword(adminId, password) {
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    await query('UPDATE admins SET password = $1 WHERE id = $2', [hashedPassword, adminId]);
   }
 }
 

@@ -45,7 +45,20 @@ async function initializeDatabase() {
       id SERIAL PRIMARY KEY,
       username TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
+      email TEXT,
       "createdAt" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    );
+
+    ALTER TABLE admins ADD COLUMN IF NOT EXISTS email TEXT DEFAULT NULL;
+
+    CREATE TABLE IF NOT EXISTS admin_reset_tokens (
+      id SERIAL PRIMARY KEY,
+      "adminId" INTEGER NOT NULL,
+      token_hash TEXT NOT NULL UNIQUE,
+      expires_at TIMESTAMPTZ NOT NULL,
+      used INTEGER DEFAULT 0,
+      "createdAt" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY ("adminId") REFERENCES admins(id) ON DELETE CASCADE
     );
 
     CREATE TABLE IF NOT EXISTS categories (
@@ -173,6 +186,8 @@ async function initializeDatabase() {
     CREATE INDEX IF NOT EXISTS idx_entitlements_movie_id ON movie_entitlements(movie_id);
     CREATE INDEX IF NOT EXISTS idx_entitlements_customer_reference ON movie_entitlements(customer_reference);
     CREATE INDEX IF NOT EXISTS idx_entitlements_access_type ON movie_entitlements(access_type);
+    CREATE INDEX IF NOT EXISTS idx_admin_reset_tokens_token_hash ON admin_reset_tokens(token_hash);
+    CREATE INDEX IF NOT EXISTS idx_admin_reset_tokens_adminId ON admin_reset_tokens("adminId");
   `);
 
   const slugify = (title) => String(title || 'movie')

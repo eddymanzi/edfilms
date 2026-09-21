@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useDocumentMeta } from '../utils/helpers';
@@ -76,6 +76,10 @@ function AdminLogin() {
           <button type="submit" className="btn btn-primary btn-block" disabled={submitting}>
             {submitting ? 'Signing in...' : 'Sign In'}
           </button>
+
+          <p className="auth-subtitle" style={{ textAlign: 'center', marginTop: '1rem' }}>
+            <Link to="/admin/forgot-password">Forgot password?</Link>
+          </p>
         </form>
       </div>
     </div>

@@ -16,6 +16,8 @@ import CategoryPage from './pages/CategoryPage';
 import Search from './pages/Search';
 import Contact from './pages/Contact';
 import AdminLogin from './pages/AdminLogin';
+import AdminForgotPassword from './pages/AdminForgotPassword';
+import AdminResetPassword from './pages/AdminResetPassword';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminMovies from './pages/AdminMovies';
 import AdminMovieEdit from './pages/AdminMovieEdit';
@@ -44,6 +46,8 @@ function App() {
             <Route path="/contact" element={<Contact />} />
 
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
+            <Route path="/admin/reset-password" element={<AdminResetPassword />} />
             <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
             <Route path="/admin/movies" element={<AdminRoute><AdminMovies /></AdminRoute>} />
             <Route path="/admin/movies/new" element={<AdminRoute><AdminMovieEdit /></AdminRoute>} />

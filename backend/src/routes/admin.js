@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const AdminService = require('../services/adminService');
+const { requestPasswordReset, resetPassword } = require('../services/passwordResetService');
 const { authenticateAdmin } = require('../middleware/auth');
 const { serverErrorMessage } = require('../utils/httpError');
 
@@ -37,6 +38,32 @@ router.post('/logout', (req, res) => {
 
 router.get('/me', authenticateAdmin, (req, res) => {
   res.json(req.admin);
+});
+
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const result = await requestPasswordReset(req.body?.email);
+    res.json(result);
+  } catch (error) {
+    const status = error.status || 500;
+    if (status !== 500) {
+      return res.status(status).json({ error: error.message });
+    }
+    res.status(500).json({ error: serverErrorMessage(error) });
+  }
+});
+
+router.post('/reset-password', async (req, res) => {
+  try {
+    const result = await resetPassword(req.body?.token, req.body?.newPassword);
+    res.json(result);
+  } catch (error) {
+    const status = error.status || 500;
+    if (status !== 500) {
+      return res.status(status).json({ error: error.message });
+    }
+    res.status(500).json({ error: serverErrorMessage(error) });
+  }
 });
 
 module.exports = router;

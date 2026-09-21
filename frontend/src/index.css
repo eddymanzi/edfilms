@@ -1091,6 +1091,20 @@ h1, h2, h3, h4 {
   padding: 0.85rem 1rem;
 }
 
+.auth-message-box {
+  background: rgba(38, 222, 129, 0.08);
+  border: 1px solid rgba(38, 222, 129, 0.3);
+  border-radius: 12px;
+  padding: 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.auth-message-box .btn {
+  margin-top: 1.25rem;
+}
+
 /* ============ ADMIN LAYOUT ============ */
 .admin-layout {
   display: grid;
