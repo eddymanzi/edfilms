@@ -1091,6 +1091,29 @@ h1, h2, h3, h4 {
   padding: 0.85rem 1rem;
 }
 
+.remember-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.35rem;
+}
+
+.remember-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.remember-label input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  accent-color: #6c5ce7;
+  cursor: pointer;
+}
+
 .auth-message-box {
   background: rgba(38, 222, 129, 0.08);
   border: 1px solid rgba(38, 222, 129, 0.3);
